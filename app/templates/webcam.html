@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Webcam</title>
+    <link href="/static/css/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <h1>Capture et prédiction</h1>
+    <video id="video" autoplay playsinline width="320" height="240"></video>
+    <canvas id="canvas" width="224" height="224" style="display:none;"></canvas>
+    <div>
+      <button id="snap" class="mon-bouton">Capturer & Envoyer</button>
+    </div>
+    <pre id="out"></pre>
+    <script>
+      const API_URL = "http://localhost:8000/predict";
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      const out = document.getElementById('out');
+
+      navigator.mediaDevices.getUserMedia({ video: true }).then((stream)=> video.srcObject = stream);
+
+      document.getElementById('snap').onclick = async () => {
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, 224, 224);
+        canvas.toBlob(async (blob) => {
+          const form = new FormData();
+          form.append("file", blob, "frame.jpg");
+          const r = await fetch(API_URL, { method:"POST", body: form });
+          const j = await r.json();
+          out.textContent = JSON.stringify(j, null, 2);
+          document.body.style.setProperty('--bincolor', j.bin_color || '#888');
+        }, 'image/jpeg');
+      };
+    </script>
+  </body>
+</html>

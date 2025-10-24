@@ -1,0 +1,27 @@
+{
+  "papier_emballage": {
+    "train": 797,
+    "val": 99,
+    "test": 101
+  },
+  "verre": {
+    "train": 400,
+    "val": 50,
+    "test": 51
+  },
+  "metal": {
+    "train": 327,
+    "val": 40,
+    "test": 42
+  },
+  "plastique": {
+    "train": 384,
+    "val": 48,
+    "test": 48
+  },
+  "non_recyclable": {
+    "train": 109,
+    "val": 13,
+    "test": 15
+  }
+}
